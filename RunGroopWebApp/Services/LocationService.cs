@@ -22,16 +22,16 @@ namespace RunGroopWebApp.Services
         }
         public async Task<List<City>> GetLocationSearch(string location)
         {
-            List<City> result = new List<City>(); // Initialize the variable to avoid CS0165
-
-            if (location.Length > 0 && char.IsDigit(location[0]))
+            List<City> result;
+            if(location.Length > 0 && char.IsDigit(location[0]))
             {
-                result = await _context.Cities.Where(x => x.Zip.ToString().StartsWith(location)).Take(4).Distinct().ToListAsync();
+                return await _context.Cities.Where(x => x.Zip.ToString().StartsWith(location)).Take(4).Distinct().ToListAsync();
             }
             else if (location.Length > 0)
             {
                 result = await _context.Cities.Where(x => x.CityName == location).Take(10).ToListAsync();
             }
+            result = await _context.Cities.Where(x => x.StateCode == location).Take(10).ToListAsync();
 
             return result;
         }
